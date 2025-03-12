@@ -1,0 +1,1239 @@
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Nirvana - Digital Development Agency</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <style>
+            :root {
+                --primary-color: #6c63ff;
+                --secondary-color: #f50057;
+                --text-color: #333;
+                --light-text: #666;
+                --bg-color: #f9f9f9;
+                --white: #ffffff;
+                --spacing-unit: 100px;
+                --border-radius: 10px;
+                --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            }
+            
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            html {
+                scroll-behavior: smooth;
+            }
+            
+            body {
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.6;
+                color: var(--text-color);
+                overflow-x: hidden;
+                background-color: var(--bg-color);
+                position: relative;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 0 30px;
+            }
+            
+            /* Background Elements */
+            .bg-element {
+                position: absolute;
+                border-radius: 50%;
+                opacity: 0.4;
+                z-index: -1;
+            }
+            
+            .bg-element-1 {
+                top: -200px;
+                left: -200px;
+                width: 500px;
+                height: 500px;
+                background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+                filter: blur(100px);
+            }
+            
+            .bg-element-2 {
+                bottom: 30%;
+                right: -200px;
+                width: 600px;
+                height: 600px;
+                background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+                filter: blur(120px);
+            }
+            
+            /* Custom Cursor */
+            .custom-cursor {
+                position: fixed;
+                width: 30px;
+                height: 30px;
+                border: 2px solid var(--primary-color);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                z-index: 9999;
+                transition: width 0.3s, height 0.3s, border-color 0.3s;
+                display: none;
+            }
+            
+            .cursor-dot {
+                position: fixed;
+                width: 8px;
+                height: 8px;
+                background-color: var(--primary-color);
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+                pointer-events: none;
+                z-index: 9999;
+                transition: width 0.3s, height 0.3s, background-color 0.3s;
+                display: none;
+            }
+            
+            /* Header */
+            header {
+                padding: 20px 0;
+                position: fixed;
+                width: 100%;
+                top: 0;
+                left: 0;
+                z-index: 100;
+                background-color: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+            
+            .navbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                text-decoration: none;
+                position: relative;
+                z-index: 1000;
+            }
+            
+            .nav-links {
+                display: flex;
+                gap: 30px;
+            }
+            
+            .nav-links a {
+                text-decoration: none;
+                color: var(--text-color);
+                font-weight: 500;
+                transition: color 0.3s ease;
+                position: relative;
+            }
+            
+            .nav-links a:after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -5px;
+                left: 0;
+                background-color: var(--primary-color);
+                transition: width 0.3s ease;
+            }
+            
+            .nav-links a:hover {
+                color: var(--primary-color);
+            }
+            
+            .nav-links a:hover:after {
+                width: 100%;
+            }
+            
+            .mobile-menu {
+                display: none;
+                flex-direction: column;
+                gap: 5px;
+                cursor: pointer;
+            }
+            
+            .mobile-menu div {
+                width: 25px;
+                height: 3px;
+                background-color: var(--text-color);
+                transition: all 0.3s ease;
+            }
+            
+            /* Hero Section */
+            .hero {
+                padding: 180px 0 var(--spacing-unit);
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .hero-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 60px;
+            }
+            
+            .hero-content {
+                flex: 1;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+                color: var(--primary-color);
+                font-weight: 600;
+                margin-bottom: 20px;
+                letter-spacing: 1px;
+            }
+            
+            .hero h1 {
+                font-size: 3.5rem;
+                font-weight: 800;
+                line-height: 1.2;
+                margin-bottom: 25px;
+            }
+            
+            .hero h1 span {
+                color: var(--primary-color);
+                position: relative;
+            }
+            
+            .hero h1 span:after {
+                content: '';
+                position: absolute;
+                height: 15px;
+                width: 100%;
+                bottom: 5px;
+                left: 0;
+                background-color: rgba(108, 99, 255, 0.2);
+                z-index: -1;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+                color: var(--light-text);
+                max-width: 650px;
+                margin-bottom: 40px;
+            }
+            
+            .hero-image {
+                flex: 1;
+                position: relative;
+            }
+            
+            .hero-image img {
+                width: 100%;
+                height: auto;
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
+            }
+            
+            .services-list {
+                display: flex;
+                gap: 30px;
+                margin-bottom: 40px;
+            }
+            
+            .service-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .service-icon {
+                width: 50px;
+                height: 50px;
+                background-color: var(--primary-color);
+                color: white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+            }
+            
+            .service-name {
+                font-weight: 600;
+            }
+            
+            .hero-buttons {
+                display: flex;
+                gap: 20px;
+            }
+            
+            .cta-button {
+                padding: 15px 30px;
+                background-color: var(--primary-color);
+                color: white;
+                text-decoration: none;
+                border-radius: 50px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                display: inline-block;
+            }
+            
+            .cta-button:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+            }
+            
+            .cta-button.outline {
+                background-color: transparent;
+                border: 2px solid var(--primary-color);
+                color: var(--primary-color);
+            }
+            
+            .cta-button.outline:hover {
+                background-color: var(--primary-color);
+                color: white;
+            }
+            
+            .stat-box {
+                position: absolute;
+                background-color: white;
+                padding: 20px;
+                border-radius: var(--border-radius);
+                box-shadow: var(--box-shadow);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .stat-box-1 {
+                top: 20px;
+                right: -20px;
+            }
+            
+            .stat-box-2 {
+                bottom: 20px;
+                left: -20px;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--primary-color);
+            }
+            
+            .stat-text {
+                font-size: 0.9rem;
+                color: var(--light-text);
+            }
+            
+            /* Projects Section */
+            .projects {
+                padding: var(--spacing-unit) 0;
+                background-color: var(--white);
+            }
+            
+            .section-title-container {
+                text-align: center;
+                max-width: 700px;
+                margin: 0 auto 60px;
+            }
+            
+            .section-subtitle {
+                font-size: 1.1rem;
+                color: var(--primary-color);
+                font-weight: 600;
+                margin-bottom: 15px;
+                display: block;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }
+            
+            .section-desc {
+                color: var(--light-text);
+                font-size: 1.1rem;
+            }
+            
+            .tabs {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+                margin-bottom: 40px;
+            }
+            
+            .tab-btn {
+                padding: 10px 25px;
+                border: none;
+                background-color: transparent;
+                border-radius: 50px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                color: var(--text-color);
+            }
+            
+            .tab-btn.active, .tab-btn:hover {
+                background-color: var(--primary-color);
+                color: white;
+            }
+            
+            .projects-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                gap: 30px;
+            }
+            
+            .project-card {
+                background-color: var(--white);
+                border-radius: var(--border-radius);
+                overflow: hidden;
+                box-shadow: var(--box-shadow);
+                transition: all 0.3s ease;
+            }
+            
+            .project-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+            
+            .project-image {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .project-image img {
+                width: 100%;
+                height: auto;
+                transition: transform 0.5s ease;
+            }
+            
+            .project-card:hover .project-image img {
+                transform: scale(1.05);
+            }
+            
+            .project-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.6));
+            }
+            
+            .project-content {
+                padding: 30px;
+            }
+            
+            .project-category {
+                font-size: 0.9rem;
+                color: var(--primary-color);
+                margin-bottom: 10px;
+                font-weight: 600;
+            }
+            
+            .project-title {
+                font-size: 1.4rem;
+                font-weight: 700;
+                margin-bottom: 15px;
+            }
+            
+            .project-desc {
+                color: var(--light-text);
+                margin-bottom: 20px;
+            }
+            
+            .project-link {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                transition: gap 0.3s ease;
+            }
+            
+            .project-link:hover {
+                gap: 15px;
+            }
+            
+            /* Team Section */
+            .team {
+                padding: var(--spacing-unit) 0;
+            }
+            
+            .team-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 40px;
+            }
+            
+            .team-member {
+                text-align: center;
+            }
+            
+            .team-img {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                overflow: hidden;
+                margin: 0 auto 25px;
+            }
+            
+            .team-img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            
+            .team-name {
+                font-size: 1.4rem;
+                font-weight: 700;
+                margin-bottom: 10px;
+            }
+            
+            .team-role {
+                color: var(--primary-color);
+                font-weight: 600;
+                margin-bottom: 15px;
+            }
+            
+            .team-bio {
+                color: var(--light-text);
+                margin-bottom: 20px;
+            }
+            
+            .social-links {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .social-link {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: var(--primary-color);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+            
+            .social-link:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+            }
+            
+            /* Contact Section */
+            .contact {
+                padding: var(--spacing-unit) 0;
+                background-color: var(--white);
+            }
+            
+            .contact-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+                border-radius: var(--border-radius);
+                overflow: hidden;
+                box-shadow: var(--box-shadow);
+            }
+            
+            .contact-info {
+                background-color: var(--primary-color);
+                color: white;
+                padding: 60px;
+            }
+            
+            .contact-title {
+                font-size: 2rem;
+                font-weight: 700;
+                margin-bottom: 20px;
+            }
+            
+            .contact-desc {
+                margin-bottom: 40px;
+            }
+            
+            .contact-details {
+                display: flex;
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .contact-item {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .contact-icon {
+                width: 50px;
+                height: 50px;
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+            }
+            
+            .contact-form {
+                background-color: white;
+                padding: 60px;
+            }
+            
+            .form-group {
+                margin-bottom: 25px;
+            }
+            
+            .form-label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+            }
+            
+            .form-control {
+                width: 100%;
+                padding: 15px;
+                border: 1px solid #eee;
+                border-radius: var(--border-radius);
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+            
+            .form-control:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+            }
+            
+            textarea.form-control {
+                min-height: 150px;
+                resize: vertical;
+            }
+            
+            .submit-btn {
+                padding: 15px 30px;
+                background-color: var(--primary-color);
+                color: white;
+                border: none;
+                border-radius: 50px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .submit-btn:hover {
+                background-color: #5a52e0;
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+            }
+            
+            /* Footer */
+            .footer {
+                padding: var(--spacing-unit) 0 40px;
+                color: var(--text-color);
+            }
+            
+            .footer-container {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+                gap: 60px;
+                margin-bottom: 60px;
+            }
+            
+            .footer-logo {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 20px;
+                display: block;
+            }
+            
+            .footer-about {
+                margin-bottom: 25px;
+                color: var(--light-text);
+            }
+            
+            .footer-social {
+                display: flex;
+                gap: 15px;
+            }
+            
+            .footer-social a {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: var(--primary-color);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+            
+            .footer-social a:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+            }
+            
+            .footer-title {
+                font-size: 1.2rem;
+                font-weight: 700;
+                margin-bottom: 25px;
+            }
+            
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-links a {
+                color: var(--light-text);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+            
+            .footer-links a:hover {
+                color: var(--primary-color);
+            }
+            
+            .footer-bottom {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 40px;
+                border-top: 1px solid #eee;
+            }
+            
+            .copyright {
+                color: var(--light-text);
+            }
+            
+            .footer-nav {
+                display: flex;
+                gap: 30px;
+            }
+            
+            .footer-nav a {
+                color: var(--light-text);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+            
+            .footer-nav a:hover {
+                color: var(--primary-color);
+            }
+            
+            /* Media Queries */
+            @media (max-width: 1024px) {
+                :root {
+                    --spacing-unit: 80px;
+                }
+                
+                .hero-container {
+                    flex-direction: column;
+                }
+                
+                .hero h1 {
+                    font-size: 3rem;
+                }
+                
+                .hero-content {
+                    margin: 0 auto;
+                    order: 2;
+                }
+                
+                .hero-image {
+                    order: 1;
+                    margin-bottom: 40px;
+                }
+                
+                .hero p {
+                    margin: 0 auto 40px;
+                }
+                
+                .services-list {
+                    justify-content: center;
+                }
+                
+                .hero-buttons {
+                    justify-content: center;
+                }
+                
+                .projects-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .contact-container {
+                    grid-template-columns: 1fr;
+                }
+                
+                .contact-info {
+                    padding: 40px;
+                }
+                
+                .contact-form {
+                    padding: 40px;
+                }
+                
+                .footer-container {
+                    grid-template-columns: 1fr;
+                    gap: 40px;
+                }
+            }
+            
+            @media (max-width: 768px) {
+                .container {
+                    padding: 0 20px;
+                }
+                
+                .nav-links {
+                    position: fixed;
+                    top: 0;
+                    right: -100%;
+                    width: 80%;
+                    height: 100vh;
+                    background-color: white;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    transition: right 0.5s ease;
+                    z-index: 998;
+                    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+                    gap: 30px;
+                }
+                
+                .nav-links.active {
+                    right: 0;
+                }
+                
+                .mobile-menu {
+                    display: block;
+                    z-index: 999;
+                }
+                
+                .mobile-menu.active div:nth-child(1) {
+                    transform: rotate(-45deg) translate(-5px, 6px);
+                }
+                
+                .mobile-menu.active div:nth-child(2) {
+                    opacity: 0;
+                }
+                
+                .mobile-menu.active div:nth-child(3) {
+                    transform: rotate(45deg) translate(-5px, -6px);
+                }
+                
+                .hero h1 {
+                    font-size: 2.5rem;
+                }
+                
+                .section-title {
+                    font-size: 2rem;
+                }
+                
+                .services-list {
+                    flex-direction: column;
+                }
+                
+                .hero-buttons {
+                    flex-direction: column;
+                    width: 100%;
+                }
+                
+                .cta-button {
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .stat-box {
+                    display: none;
+                }
+            }
+            
+            @media (max-width: 576px) {
+                :root {
+                    --spacing-unit: 60px;
+                }
+                
+                .hero h1 {
+                    font-size: 2rem;
+                }
+                
+                .hero-subtitle {
+                    font-size: 1rem;
+                }
+                
+                .hero p {
+                    font-size: 1rem;
+                }
+                
+                .section-title {
+                    font-size: 1.8rem;
+                }
+                
+                .section-desc {
+                    font-size: 1rem;
+                }
+                
+                .team-grid {
+                    grid-template-columns: 1fr;
+                }
+                
+                .footer-bottom {
+                    flex-direction: column;
+                    gap: 20px;
+                    text-align: center;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Background Elements -->
+        <div class="bg-element bg-element-1"></div>
+        <div class="bg-element bg-element-2"></div>
+        
+        <!-- Custom Cursor -->
+        <div class="custom-cursor"></div>
+        <div class="cursor-dot"></div>
+        
+        <!-- Header -->
+        <header>
+            <div class="container">
+                <nav class="navbar">
+                    <a href="#" class="logo">Nirvana</a>
+                    <div class="nav-links">
+                        <a href="#home">ANA SAYFA</a>
+                        <a href="#projects">ÇALIŞMALARIMIZ</a>
+                        <a href="#team">TAKIMIMIZ</a>
+                        <a href="#contact">İLETİŞİM</a>
+                    </div>
+                    <div class="mobile-menu">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="hero-subtitle">Digital Development </div>
+                    <h1>PROFESYONEL <span>DİJİTAL DENEYEİMLER</span> YARATIYORUZ</h1>
+                    <p>Sizinki gibi iddialı işletmelerin farkındalık yaratarak, web trafiğini artırarak, müşterilerle bağlantı kurarak ve genel satışları artırarak daha fazla kar elde etmelerine yardımcı oluyoruz.</p>
+                    <div class="services-list">
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-code"></i></div>
+                            <div class="service-name">Web Development</div>
+                        </div>
+                        <div class="service-item">
+                            <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div class="service-name">App Development</div>
+                        </div>
+                    </div>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="cta-button">ÇALIŞMALARIMIZ</a>
+                        <a href="#contact" class="cta-button outline">İletişim</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="digital.png" alt="Digital Development">
+                    <div class="stat-box stat-box-1">
+                        <div class="stat-number">SONSUZ</div>
+                        <div class="stat-text">GÜVEN</div>
+                    </div>
+                    <div class="stat-box stat-box-2">
+                        <div class="stat-number">7/24</div>
+                        <div class="stat-text">HİZMET</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Projects Section -->
+        <section class="projects" id="projects">
+            <div class="container">
+                <div class="section-title-container">
+                    <span class="section-subtitle">ÇALIŞMALARIMIZ</span>
+                    <h2 class="section-title">Son Çalışmalar</h2>
+                    <p class="section-desc">Yaptığımız işlerden ve elde ettiğimiz sonuçlardan gurur duyuyoruz. İşte becerilerimizi ve uzmanlığımızı sergileyen son projelerimizden bazıları.</p>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn active" data-filter="all">HEPSİ</button>
+                    <button class="tab-btn" data-filter="web">Web</button>
+                    <button class="tab-btn" data-filter="app">App</button>
+                </div>
+                <div class="projects-grid">
+                    <div class="project-card" data-category="web">
+                        <div class="project-image">
+                            <img src="website1.PNG" alt="Project 1">
+                            <div class="project-overlay"></div>
+                        </div>
+                        <div class="project-content">
+                            <div class="project-category">Web Development</div>
+                            <h3 class="project-title">Modern Portfolyo</h3>
+                            <p class="project-desc">Html Css ve JavaScript teknolojilerini kullanarak yaptığımız modern tasarıma sahip, kullanıcı dostu websitemiz.</p>
+                            <a href="https://aliosmanny.github.io/portfolyo_e/ " class="project-link" target="_blank">View Project <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Team Section -->
+        <section class="team" id="team">
+            <div class="container">
+                <div class="section-title-container">
+                    <span class="section-subtitle">Ekibimiz</span>
+                    <h2 class="section-title">NASIL ÇALIŞIYORUZ?</h2>
+                    <p class="section-desc">Yetenekli profesyonel ekibimiz, müşterilerimize olağanüstü sonuçlar sunmaya kendini adamıştır.</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-img">
+                            <img src="mustafa.JPG" alt="Ekip Üyesi 1">
+                        </div>
+                        <h3 class="team-name">Mustafa Cici</h3>
+                        <div class="team-role">Backend Developer</div>
+                        <p class="team-bio">React ve Node.js gibi alanlarda bilgi sahibi ve tecrübeli bir yazılım geliştirici olarak ekibimize değer katıyor.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        
+                        </div>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-img">
+                            <img src="bilge.jpg" alt="Ekip Üyesi 2">
+                        </div>
+                        <h3 class="team-name">Bilgehan Demiröz</h3>
+                        <div class="team-role">Frontend Developer</div>
+                        <p class="team-bio">HTML, CSS ve JavaScript konularında deneyim sahibi, tecrübeli ve kendine özgün siteler yapabilen yetenekli bir geliştirici.</p>
+                        <div class="social-links">
+                        
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                
+                    <div class="team-member">
+                        <div class="team-img">
+                            <img src="alifoto.jpg" alt="Ekip Üyesi 3">
+                        </div>
+                        <h3 class="team-name">Ali Osman Yeşilçayır</h3>
+                        <div class="team-role">Backend Developer</div>
+                        <p class="team-bio">Yenilikçi çözümler üreten ve karmaşık problemlere etkili yaklaşımlar geliştiren, deneyimli bir backend uzmanı olarak ekibimizin önemli bir parçası.</p>
+                        <div class="social-links">
+                        
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-img">
+                            <img src="yüksel.jpg" alt="Ekip Üyesi 4">
+                        </div>
+                        <h3 class="team-name">Yüksel Karcı</h3>
+                        <div class="team-role">Mobile Developer</div>
+                        <p class="team-bio">Mobil uygulama geliştirme konusunda uzmanlaşmış, kullanıcı dostu ve performansı yüksek uygulamalar oluşturan değerli bir geliştirici.</p>
+                        <div class="social-links">
+                        
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-img">
+                            <img src="yusuf.jpg" alt="Ekip Üyesi 5">
+                        </div>
+                        <h3 class="team-name">Yusuf Kantarcıoğlu</h3>
+                        <div class="team-role">UX Designer & Frontend Developer</div>
+                        <p class="team-bio">Kullanıcı deneyimi tasarımı ve frontend geliştirme konularında uzmanlaşmış, müşterilerin ihtiyaçlarına estetik ve işlevsel çözümler sunan yaratıcı bir tasarımcı.</p>
+                        <div class="social-links">
+                        
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="section-title-container">
+                    <span class="section-subtitle">İLETİŞİM</span>
+                    <h2 class="section-title">BİZİMLE İLETİŞİME  GEÇİN</h2>
+                    <p class="section-desc">Aklınızda bir proje mi var veya hizmetlerimiz hakkında daha fazla bilgi edinmek mi istiyorsunuz? Sizden haber almak isteriz.</p>
+                </div>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3 class="contact-title">İLETİŞİM BİLGİLERİ</h3>
+                        <p class="contact-desc">Formu doldurun, ekibimiz 24 saat içinde size geri dönüş yapacaktır.</p>
+                    </div>
+                    <div class="contact-form">
+                        <form>
+                            <div class="form-group">
+                                <label class="form-label">İsim</label>
+                                <input type="text" class="form-control" placeholder="İsminiz">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" placeholder="Emailiniz">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">KONU</label>
+                                <input type="text" class="form-control" placeholder="KONU">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">MESAJINIZ</label>
+                                <textarea class="form-control" placeholder="MESAJ"></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">GÖNDER</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-container">
+                    <div class="footer-col">
+                        <a href="#" class="footer-logo">Nirvana</a>
+                        <p class="footer-about">Her ölçekten işletme için yüksek kaliteli çözümler sunmaya odaklanmış bir dijital geliştiricileriz.</p>
+                    </div>
+                    <div class="footer-col">
+                        <h3 class="footer-title">Services</h3>
+                        <div class="footer-links">
+                            <a href="#">Web Development</a>
+                            <a href="#">App Development</a>
+                            <a href="#">UI/UX Design</a>
+                            <a href="#">Digital Marketing</a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h3 class="footer-title">Company</h3>
+                        <div class="footer-links">
+                            <a href="#">About Us</a>
+                            <a href="#">Our Team</a>
+                            <a href="#">Portfolio</a>
+                            <a href="#">Testimonials</a>
+                        </div>
+                    </div>
+                    <div class="footer-col">
+                        <h3 class="footer-title">Support</h3>
+                        <div class="footer-links">
+                            <a href="#">FAQ</a>
+                            <a href="#">Privacy Policy</a>
+                            <a href="#">Terms of Service</a>
+                            <a href="#">Contact</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="copyright">© 2025 Nirvana. All rights reserved.</div>
+                    <div class="footer-nav">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Use</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- JavaScript -->
+        <script>
+            // Mobile Menu Toggle
+            document.querySelector('.mobile-menu').addEventListener('click', function() {
+                this.classList.toggle('active');
+                document.querySelector('.nav-links').classList.toggle('active');
+            });
+            
+            // Smooth Scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    document.querySelector('.mobile-menu').classList.remove('active');
+                    document.querySelector('.nav-links').classList.remove('active');
+                });
+            });
+            
+            // Custom Cursor
+            const cursor = document.querySelector('.custom-cursor');
+            const cursorDot = document.querySelector('.cursor-dot');
+            
+            document.addEventListener('mousemove', function(e) {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                cursorDot.style.left = e.clientX + 'px';
+                cursorDot.style.top = e.clientY + 'px';
+            });
+            
+            // Project Filtering
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    tabBtns.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    
+                    projectCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Header Scroll Effect
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('header');
+                
+                if (window.scrollY > 50) {
+                    header.style.padding = '10px 0';
+                    header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                } else {
+                    header.style.padding = '20px 0';
+                    header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                }
+            });
+        </script>
+    </body>
+    </html>
