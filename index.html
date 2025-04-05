@@ -1145,7 +1145,7 @@
                         <p class="contact-desc">Formu doldurun, ekibimiz 24 saat içinde size geri dönüş yapacaktır.</p>
                     </div>
                     <div class="contact-form">
-                        <form>
+                        <form id="contactForm">
                             <div class="form-group">
                                 <label class="form-label">İsim</label>
                                 <input type="text" class="form-control" placeholder="İsminiz">
@@ -1273,7 +1273,7 @@
                     });
                 });
             });
-            
+                        
             // Header Scroll Effect
             window.addEventListener('scroll', function() {
                 const header = document.querySelector('header');
@@ -1286,6 +1286,52 @@
                     header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
                 }
             });
-        </script>
+            
+            // Telegram Bot Integration
+            document.getElementById('contactForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Form verilerini al
+                const name = this.querySelector('input[placeholder="İsminiz"]').value;
+                const email = this.querySelector('input[placeholder="Emailiniz"]').value;
+                const subject = this.querySelector('input[placeholder="KONU"]').value;
+                const message = this.querySelector('textarea[placeholder="MESAJ"]').value;
+                
+                // Mesaj formatını oluştur
+                const formattedMessage = `Yeni İletişim Formu:\n\nİsim: ${name}\nEmail: ${email}\nKonu: ${subject}\nMesaj: ${message}`;
+                
+                // Telegram Bot API bilgileri
+                const botToken = "7678928815:AAF8vklDknpSJqNMrq-9sQD06R7XEyhiTeQ"; // BOŞ BIRAKTIM, SİZ DOLDURACAKSINIZ
+                const chatId = "5627837788"; // BOŞ BIRAKTIM, SİZ DOLDURACAKSINIZ
+                
+                // API URL
+                const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+                
+                // API isteği gönder
+                fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: formattedMessage
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert('Mesajınız başarıyla gönderildi!');
+                        this.reset(); // Formu temizle
+                    } else {
+                        alert('Mesaj gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+                });
+            });
+            </script>
     </body>
     </html>
